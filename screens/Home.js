@@ -26,7 +26,7 @@ function Home(){
                 <View style={styles.cardView}>
                     <Image 
                         style={{width: 60, height: 60, borderRadius: 30}}
-                        source={{uri:"https://unsplash.com/photos/mEZ3PoFGs_k?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink"}}
+                        source={{uri:"https://images.unsplash.com/photo-1595399874399-10f2444c4eb2?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8cGVyc29ufGVufDB8MnwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"}}
                     />
                     <View style={{marginLeft: 10}}>
                         <Text style={styles.text}>{item.name}</Text>
