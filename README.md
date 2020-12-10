@@ -1,4 +1,9 @@
-### Employee-Management App React Native
+# Employee-Management App React Native
+
+### Dependencies used
+1. Expo
+2. React Navigation 5
+3. React Native paper UI library 
 
 ### Instructions
 ```
