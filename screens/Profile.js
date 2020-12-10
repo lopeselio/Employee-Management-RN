@@ -1,12 +1,20 @@
 import React from 'react'
-import { StyleSheet, View, Text, Image } from 'react-native'
+import { StyleSheet, View, Text, Image, Linking, Platform } from 'react-native'
 import { Title, Card, Button } from 'react-native-paper'
 import { MaterialIcons, Entypo } from '@expo/vector-icons'
+import LinearGradient from 'expo-linear-gradient'
 
 const Profile = () => {
+    const openDialog = () => {
+        if(Platform.OS === 'android'){
+            Linking.openURL(('tel: 12345'))
+        }else {
+            Linking,openURL('telprompt: 12345')
+        }
+    }
     return(
         <View style={styles.root}>
-            <linearGradient 
+            <LinearGradient 
                 colors={["#0033ff", "#6bc1ff"]}
                 style={{height: '20%'}}
             />
@@ -21,13 +29,16 @@ const Profile = () => {
                 <Title>John Doe</Title>
                 <Text style={{fontSize: 18}}>Web Developer</Text>
             </View>
-            <Card style={styles.mycard}>
+            <Card style={styles.mycard} onPress={() => {
+                Linking.openURL('mailto: abc@abc.com')
+            }
+            }>
                 <View style={styles.cardContent}>
                     <MaterialIcons name='email' size={32} color='#006aff' />
                     <Text style={styles.mytext}>abc@abc.com</Text>
                 </View>
             </Card>
-            <Card style={styles.mycard}>
+            <Card style={styles.mycard} onPress={() => openDialog()}>
                 <View style={styles.cardContent}>
                     <Entypo name='phone' size={32} color='#006aff' />
                     <Text style={styles.mytext}>8975906909</Text>
