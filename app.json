@@ -4,9 +4,9 @@
     "slug": "employee_app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/dev.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/dev.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
