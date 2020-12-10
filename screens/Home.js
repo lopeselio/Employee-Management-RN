@@ -1,83 +1,105 @@
-import React from 'react'
-import { StyleSheet, View, Text, Image, FlatList } from 'react-native'
-import { Card, FAB } from 'react-native-paper'
+import React,{useEffect,useState} from 'react';
+import { StyleSheet, Text, View,Image,FlatList,Alert} from 'react-native';
+import {Card,FAB} from 'react-native-paper'
+import {useSelector,useDispatch} from 'react-redux'
 
-function Home(){
-    
-    const data = [
-        {id:1, name: "John", position: "web dev"},
-        {id:2, name: "Son", position: "app dev"},
-        {id:3, name: "Don", position: "ML dev"},
-        {id:4, name: "Ron", position: "designer"},
-        {id:5, name: "Ron", position: "designer"},
-        {id:6, name: "Ron", position: "designer"},
-        {id:7, name: "Ron", position: "designer"},
-        {id:8, name: "Ron", position: "designer"},
-        {id:9, name: "Ron", position: "designer"},
-        {id:10, name: "Ron", position: "designer"}
+const Home = ({navigation,route})=>{
 
-
-
-    ]
-
-    const renderList = ((item) => {
-        return(
-            <Card style={styles.mycard} key={item.id}>
-                <View style={styles.cardView}>
-                    <Image 
-                        style={{width: 60, height: 60, borderRadius: 30}}
-                        source={{uri:"https://images.unsplash.com/photo-1595399874399-10f2444c4eb2?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8cGVyc29ufGVufDB8MnwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"}}
-                    />
-                    <View style={{marginLeft: 10}}>
-                        <Text style={styles.text}>{item.name}</Text>
-                        <Text>{item.position}</Text>
-                    </View>
-                </View>
-            </Card>
-
-        )
+    //  const [data,setData] = useState([])
+    //  const [loading,setLoading]= useState(true)
+    const dispatch  = useDispatch()
+    const {data,loading} =  useSelector((state)=>{
+        return state
     })
+
+    console.log(data,loading)
+   
+     const fetchData = ()=>{
+        fetch("http://10.0.2.2:3000/")
+        .then(res=>res.json())
+        .then(results=>{
     
-    return (
-        <View>
-            {/* {renderList} */}
-            <FlatList
-                data={data}
-                renderItem={({item}) => {
-                    console.log(item)
-                    return renderList(item)
-                }}
-                keyExtractor={(item) => `${item.id}`}
-            />
-            <FAB
-                style={styles.fab}
-                small = {false}
-                icon="plus"
-                theme={{colors: {accent: '#006aff'}}}
-                onPress={() => console.log('Pressed')}
-            />
-        </View>
-    )
+            // setData(results)
+            // setLoading(false)
+          dispatch({type:"ADD_DATA",payload:results})
+          dispatch({type:"SET_LOADING",payload:false})
+
+        }).catch(err=>{
+            Alert.alert("someting went wrong")
+        })
+     }
+    
+     useEffect(()=>{
+          fetchData()
+     },[])
+    
+    const renderList = ((item)=>{
+          return(
+            <Card style={styles.mycard}
+            
+            onPress={()=>navigation.navigate("Profile",{item})}
+            >
+            <View style={styles.cardView}>
+                 <Image
+                style={{width:60,height:60,borderRadius:30}}
+                source={{uri:item.picture}}
+                
+                />
+                <View style={{marginLeft:10}}>
+                    <Text style={styles.text}>{item.name}</Text>   
+                     <Text style={styles.text}>{item.position}</Text>      
+                </View>
+           
+            </View>
+            
+           </Card>
+          )
+    })
+   return(
+       <View style={{flex:1}}>
+    
+        <FlatList
+              data={data}
+              renderItem={({item})=>{
+                return renderList(item)
+              }}
+              keyExtractor={item=>item._id}
+              onRefresh={()=>fetchData()}
+              refreshing={loading}
+              />
+        
+
+            <FAB  onPress={()=>navigation.navigate("Create")}
+                    style={styles.fab}
+                    small={false}
+                    icon="plus"
+                    theme={{colors:{accent:"#006aff"}}}
+        
+                />
+          
+       </View>
+     
+   ) 
 }
 
 const styles = StyleSheet.create({
-    mycard: {
-        margin: 5, 
-        padding: 5
+    mycard:{
+        margin:5,
+       
     },
-    cardView: {
-        flexDirection: 'row'
-    }, 
-    text: {
-        fontSize: 18,
-
+    cardView:{
+         flexDirection:"row",
+         padding:6
+    },
+    text:{
+        fontSize:18,
     },
     fab: {
         position: 'absolute',
         margin: 16,
         right: 0,
         bottom: 0,
-    }
+      },
 })
 
-export default Home
+export default Home;
